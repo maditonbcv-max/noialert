@@ -14,7 +14,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@discordjs/voice": "^0.18.0",
+    "@discordjs/voice": "^0.19.2",
     "@fastify/cors": "^10.0.1",
     "@fastify/rate-limit": "^10.2.1",
     "discord.js": "^14.16.3",
