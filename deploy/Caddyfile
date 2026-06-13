@@ -1,10 +1,21 @@
-# API用サブドメインの TLS 終端 + リバースプロキシ (仕様 §14)
-# Caddy が自動で Let's Encrypt 証明書を取得・更新する。
-# 配置例: /etc/caddy/Caddyfile  → sudo systemctl reload caddy
+# 構成A: 発信サイト(web/) と Bot API を1ドメインで配信（Cloudflare不使用）
+# Caddy が Let's Encrypt 証明書を自動取得・更新する。
+#   配置例: /etc/caddy/Caddyfile  → sudo systemctl reload caddy
 #
-# api.alert.example.com を実際のドメインに置き換えること。
+# 置き換える箇所:
+#   - alert.example.com … 実際に使うホスト名（このAレコードをVPSの公開IPに向ける）
+#   - root のパス        … クローン先 /opt/noialert/app/web に合わせる
+#
+# Web と API が同一オリジンになるため CORS 不要。
 
-api.alert.example.com {
-    reverse_proxy 127.0.0.1:3000
+alert.example.com {
     encode gzip
+
+    # /api/* と /healthz は Bot へリバースプロキシ
+    @api path /api/* /healthz
+    reverse_proxy @api 127.0.0.1:3000
+
+    # それ以外は静的サイト(web/)を配信
+    root * /opt/noialert/app/web
+    file_server
 }
