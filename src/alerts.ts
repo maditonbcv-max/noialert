@@ -3,7 +3,7 @@
 // 文言(読み上げ内容)は config/voices.json 側で管理し、ここは runtime 制御
 // (優先度・割り込み・連打制限) の正とする。両者の id は一致させること。
 
-export type AlertKind = 'fixed' | 'preset_tts';
+export type AlertKind = 'fixed';
 
 export interface AlertDef {
   id: string;
@@ -36,11 +36,6 @@ const fixed = (
   file: `${id}.ogg`,
 });
 
-const preset = (id: string, label: string): AlertDef => ({
-  id, label, priority: 30, throttleMs: 10_000,
-  interrupt: false, kind: 'preset_tts', file: `${id}.ogg`,
-});
-
 // 固定音声 16種 (仕様 §7.1)
 const FIXED: AlertDef[] = [
   fixed('honjin_15s',      '本陣！15秒以内',                 100, 5_000),
@@ -61,17 +56,9 @@ const FIXED: AlertDef[] = [
   fixed('test',            'テスト再生',                      10, 10_000),
 ];
 
-// 定型TTS 6種 (仕様 §7.2)。実行時は固定音声と同等(事前生成ファイルの即時再生)。
-const PRESET: AlertDef[] = [
-  preset('tts_shugo_5min',    '5分後集合'),
-  preset('tts_bouei_keizoku', '防衛継続'),
-  preset('tts_hokyu',         '補給お願いします'),
-  preset('tts_teisatsu',      '偵察注意'),
-  preset('tts_migi',          '右側注意'),
-  preset('tts_hidari',        '左側注意'),
-];
+// 定型TTS(仕様 §7.2)は運用判断により撤去。任意連絡は自由入力TTS(§7.3)でカバーする。
 
-export const ALERTS: AlertDef[] = [...FIXED, ...PRESET];
+export const ALERTS: AlertDef[] = [...FIXED];
 
 const BY_ID = new Map(ALERTS.map((a) => [a.id, a]));
 
@@ -79,7 +66,7 @@ export function getAlert(id: string): AlertDef | undefined {
   return BY_ID.get(id);
 }
 
-/** プリロードすべき全ファイル名 (固定16 + 定型6 = 22) */
+/** プリロードすべき全ファイル名 (固定16) */
 export function allAudioFiles(): string[] {
   return ALERTS.map((a) => a.file);
 }

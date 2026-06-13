@@ -55,13 +55,6 @@
     ]},
 
     { "id": "kaijo", "alert": false, "text": "警報解除。対応ありがとうございました。" },
-    { "id": "test",  "alert": false, "text": "テスト再生です。音量を確認してください。" },
-
-    { "id": "tts_shugo_5min",     "alert": false, "preset": true, "text": "5分後に集合してください。" },
-    { "id": "tts_bouei_keizoku",  "alert": false, "preset": true, "text": "防衛を継続してください。" },
-    { "id": "tts_hokyu",          "alert": false, "preset": true, "text": "防衛後、補給をお願いします。" },
-    { "id": "tts_teisatsu",       "alert": false, "preset": true, "text": "偵察の可能性があります。各自確認してください。" },
-    { "id": "tts_migi",           "alert": false, "preset": true, "text": "敵主力は右側へ移動中です。" },
-    { "id": "tts_hidari",         "alert": false, "preset": true, "text": "敵主力は左側へ移動中です。" }
+    { "id": "test",  "alert": false, "text": "テスト再生です。音量を確認してください。" }
   ]
 }
