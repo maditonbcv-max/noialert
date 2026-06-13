@@ -8,6 +8,10 @@ dist/
 .env
 .env.local
 
+# 発信サイトの実シークレットを含む設定（公開リポジトリに載せない）
+# 雛形は web/config.example.js を参照
+web/config.js
+
 # generated audio (re-generate with `npm run gen:audio`)
 # -> 音声ファイルはリポジトリに同梱する方針(仕様 §2)なので audio/ はコミットする。
 #    一時生成物のみ無視する。

@@ -38,20 +38,20 @@ const fixed = (
 
 // 固定音声 16種 (仕様 §7.1)
 const FIXED: AlertDef[] = [
-  fixed('honjin_15s',      '本陣！15秒以内',                 100, 5_000),
+  fixed('honjin_15s',      '本陣！15秒以内到達揚陸有',        100, 5_000),
   fixed('honjin_40s',      '本陣！40秒以内（画面内揚陸艦）',  95, 5_000),
   fixed('machigai',        '警報間違いでした',                92, 5_000),
   fixed('toppa_a_yoriku',  'A突破・揚陸有',                   88, 10_000),
   fixed('toppa_b_yoriku',  'B突破・揚陸有',                   88, 10_000),
   fixed('toppa_a',         'A地点突破',                       85, 10_000),
   fixed('toppa_b',         'B地点突破',                       85, 10_000),
-  fixed('onmitsu_honjin',  '隠密・本陣恐れ',                  80, 10_000),
-  fixed('onmitsu_chuo',    '隠密・中央警戒',                  75, 10_000),
-  fixed('yosaiho_chuo',    '要塞砲・中央30秒',                70, 10_000),
-  fixed('yosaiho_a',       '要塞砲・A方向30秒',               70, 10_000),
-  fixed('yosaiho_b',       '要塞砲・B方向30秒',               70, 10_000),
-  fixed('awase_chuo',      '中央 攻撃合わせ',                 65, 15_000),
-  fixed('awase_tekihonjin','敵本陣 攻撃合わせ',               65, 15_000),
+  fixed('onmitsu_honjin',  '敵隠密・本陣恐れ',                80, 10_000),
+  fixed('onmitsu_chuo',    '敵隠密・中央警戒',                75, 10_000),
+  fixed('yosaiho_chuo',    'ザンスカ砲・中央',                70, 10_000),
+  fixed('yosaiho_a',       'ザンスカ砲・A方向',               70, 10_000),
+  fixed('yosaiho_b',       'ザンスカ砲・B方向',               70, 10_000),
+  fixed('awase_chuo',      '中央攻撃合せ10秒後',              65, 15_000),
+  fixed('awase_tekihonjin','敵本陣攻撃合せ10秒後',            65, 15_000),
   fixed('kaijo',           '警報解除',                        60, 10_000),
   fixed('test',            'テスト再生',                      10, 10_000),
 ];
