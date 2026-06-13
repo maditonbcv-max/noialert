@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a1a1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="艦隊警報" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>ノイサガ艦隊警報</title>
+</head>
+<body>
+  <!-- 接続エラーバナー (仕様 §8.1) -->
+  <div id="error-banner" class="error-banner hidden">⚠ サーバーに接続できません</div>
+
+  <!-- 本陣ボタン(sticky・最上段, 仕様 §8.1) -->
+  <header class="sticky-top">
+    <div class="title-row">
+      <span class="title">ノイサガ艦隊警報</span>
+      <button id="sender-btn" class="sender-btn" type="button">発信者: <span id="sender-name">—</span></button>
+    </div>
+    <button class="btn honjin honjin-xl" data-alert="honjin_15s">🚨 本陣！15秒以内</button>
+    <button class="btn honjin honjin-lg" data-alert="honjin_40s">🚨 本陣！40秒以内（画面内揚陸艦）</button>
+  </header>
+
+  <main>
+    <!-- 突破 -->
+    <section>
+      <h2 class="sec-toppa">突破</h2>
+      <div class="grid2">
+        <button class="btn toppa" data-alert="toppa_a">A地点突破</button>
+        <button class="btn toppa" data-alert="toppa_a_yoriku">A突破・揚陸有</button>
+        <button class="btn toppa" data-alert="toppa_b">B地点突破</button>
+        <button class="btn toppa" data-alert="toppa_b_yoriku">B突破・揚陸有</button>
+      </div>
+    </section>
+
+    <!-- 隠密・要塞砲 -->
+    <section>
+      <h2 class="sec-onmitsu">隠密・要塞砲</h2>
+      <div class="grid2">
+        <button class="btn onmitsu" data-alert="onmitsu_chuo">隠密・中央警戒</button>
+        <button class="btn onmitsu" data-alert="onmitsu_honjin">隠密・本陣恐れ</button>
+        <button class="btn onmitsu" data-alert="yosaiho_chuo">要塞砲・中央</button>
+        <button class="btn onmitsu" data-alert="yosaiho_a">要塞砲・A方向</button>
+        <button class="btn onmitsu" data-alert="yosaiho_b">要塞砲・B方向</button>
+      </div>
+    </section>
+
+    <!-- 攻撃合わせ -->
+    <section>
+      <h2 class="sec-awase">攻撃合わせ</h2>
+      <div class="grid2">
+        <button class="btn awase" data-alert="awase_chuo">中央 攻撃合わせ</button>
+        <button class="btn awase" data-alert="awase_tekihonjin">敵本陣 攻撃合わせ</button>
+      </div>
+    </section>
+
+    <!-- 通常連絡(定型TTS) -->
+    <section>
+      <h2 class="sec-teikei">通常連絡（定型）</h2>
+      <div class="grid2">
+        <button class="btn teikei" data-alert="tts_shugo_5min">5分後集合</button>
+        <button class="btn teikei" data-alert="tts_bouei_keizoku">防衛継続</button>
+        <button class="btn teikei" data-alert="tts_hokyu">補給お願いします</button>
+        <button class="btn teikei" data-alert="tts_teisatsu">偵察注意</button>
+        <button class="btn teikei" data-alert="tts_migi">右側注意</button>
+        <button class="btn teikei" data-alert="tts_hidari">左側注意</button>
+      </div>
+    </section>
+
+    <!-- 自由入力TTS (管理者・警報係) -->
+    <section id="free-tts-section">
+      <h2 class="sec-teikei">自由入力TTS（管理者・警報係）</h2>
+      <form id="free-tts-form" class="free-tts">
+        <textarea id="free-tts-text" maxlength="80" rows="2" placeholder="80文字以内・URL/改行不可"></textarea>
+        <div class="free-tts-row">
+          <span id="free-tts-count" class="count">0 / 80</span>
+          <button class="btn teikei" type="submit">読み上げ送信</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- 取消・解除(sticky フッタ・常時到達, 仕様 §8.1/§8.2) -->
+  <footer class="sticky-bottom">
+    <button class="btn machigai" data-alert="machigai">⚠ 警報間違いでした</button>
+    <div class="grid2">
+      <button class="btn kaijo" data-alert="kaijo">✅ 警報解除</button>
+      <button class="btn test" data-alert="test">🔊 テスト再生</button>
+    </div>
+  </footer>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# noialert Bot 用 systemd ユニット (仕様 §14)
+# 配置例: /etc/systemd/system/noialert-bot.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now noialert-bot
+#   journalctl -u noialert-bot -f   # ログ確認
+
+[Unit]
+Description=noialert Discord VC alert bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=noialert
+WorkingDirectory=/opt/noialert
+# 事前に `npm ci && npm run build` 済みであること
+ExecStart=/usr/bin/node dist/index.js
+EnvironmentFile=/opt/noialert/.env
+Environment=NODE_ENV=production
+Restart=always
+RestartSec=3
+# 落ちても無限に再起動 (仕様 §18)
+StartLimitIntervalSec=0
+
+[Install]
+WantedBy=multi-user.target

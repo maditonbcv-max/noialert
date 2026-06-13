@@ -1,0 +1,188 @@
+:root {
+  --bg: #161616;
+  --panel: #1f1f1f;
+  --text: #f2f2f2;
+  --muted: #9a9a9a;
+  --honjin: #d32f2f;
+  --honjin-press: #962020;
+  --toppa: #ef6c00;
+  --onmitsu: #7b3fb5;
+  --awase: #2e9b4f;
+  --teikei: #e8e8e8;
+  --teikei-text: #1a1a1a;
+  --grey: #555;
+  --machigai: #c2410c;
+  --ok: #2e9b4f;
+  --err: #d32f2f;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  font-size: 16px;
+}
+
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+h2 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin: 14px 4px 6px;
+  letter-spacing: 0.05em;
+}
+.sec-toppa { color: var(--toppa); }
+.sec-onmitsu { color: var(--onmitsu); }
+.sec-awase { color: var(--awase); }
+.sec-teikei { color: var(--muted); }
+
+/* ---- ボタン共通 ---- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  padding: 16px 10px;
+  min-height: 58px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  line-height: 1.25;
+  transition: transform 0.05s ease, filter 0.1s ease;
+}
+.btn:active { transform: scale(0.97); filter: brightness(0.85); }
+.btn:disabled { opacity: 0.55; }
+
+.honjin { background: var(--honjin); }
+.honjin-xl { font-size: 1.55rem; min-height: 92px; margin-bottom: 8px; }
+.honjin-lg { font-size: 1.15rem; min-height: 68px; }
+.toppa { background: var(--toppa); }
+.onmitsu { background: var(--onmitsu); }
+.awase { background: var(--awase); }
+.teikei { background: var(--teikei); color: var(--teikei-text); }
+.machigai { background: var(--machigai); font-size: 1.2rem; min-height: 64px; border: 2px solid #fff3; }
+.kaijo { background: var(--grey); }
+.test { background: var(--grey); }
+
+/* ---- レイアウト ---- */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+main { padding: 8px 10px 12px; }
+section { margin-bottom: 6px; }
+
+.sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding: 8px 10px 10px;
+  box-shadow: 0 4px 10px #0008;
+}
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.title { font-size: 0.95rem; font-weight: 700; color: var(--muted); }
+.sender-btn {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: var(--bg);
+  padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 10px #0008;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- 自由入力TTS ---- */
+.free-tts textarea {
+  width: 100%;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  resize: none;
+}
+.free-tts-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+}
+.free-tts-row .btn { width: auto; flex: 1; }
+.count { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+
+/* ---- バナー / トースト ---- */
+.error-banner {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--err);
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.hidden { display: none; }
+
+.toast-container {
+  position: fixed;
+  left: 50%;
+  bottom: 120px;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: calc(100% - 32px);
+  max-width: 420px;
+  pointer-events: none;
+}
+.toast {
+  background: #333;
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 4px 16px #0009;
+  animation: toast-in 0.15s ease;
+}
+.toast.ok { background: var(--ok); }
+.toast.err { background: var(--err); }
+.toast.warn { background: var(--toppa); }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

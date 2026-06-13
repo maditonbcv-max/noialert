@@ -1,0 +1,10 @@
+# API用サブドメインの TLS 終端 + リバースプロキシ (仕様 §14)
+# Caddy が自動で Let's Encrypt 証明書を取得・更新する。
+# 配置例: /etc/caddy/Caddyfile  → sudo systemctl reload caddy
+#
+# api.alert.example.com を実際のドメインに置き換えること。
+
+api.alert.example.com {
+    reverse_proxy 127.0.0.1:3000
+    encode gzip
+}

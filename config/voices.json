@@ -1,0 +1,67 @@
+{
+  "_comment": "音声生成の入力(仕様 §12.2)。文言・話者・正規化はここで一元管理し、変更→ npm run gen:audio で再生成する。runtime の優先度/連打制限は src/alerts.ts 側。id は両者で一致させること。",
+  "voicevoxUrl": "http://localhost:50021",
+  "speaker": 3,
+  "normalize": {
+    "enabled": true,
+    "lufs": -16,
+    "truePeak": -1.5,
+    "lra": 11
+  },
+  "alertSound": {
+    "_comment": "緊急警報(alert:true)の冒頭0.5秒に合成する警報音。ffmpeg lavfi で生成するのでファイル不要(仕様 §12.1)。",
+    "enabled": true,
+    "durationMs": 500,
+    "tones": [880, 1320],
+    "gainDb": -6
+  },
+  "opus": {
+    "bitrate": "64k",
+    "sampleRate": 48000
+  },
+  "clips": [
+    { "id": "honjin_15s",       "alert": true,  "text": "緊急、本陣！揚陸艦、15秒以内に到達おそれあり。緊急、本陣！" },
+    { "id": "honjin_40s",       "alert": true,  "text": "緊急、本陣！画面内に揚陸艦あり。40秒以内に到達おそれあり。" },
+    { "id": "machigai",         "alert": true,  "text": "先ほどの警報は間違いでした。先ほどの警報は間違いです。" },
+    { "id": "toppa_a",          "alert": true,  "text": "A地点、突破されました。A地点、突破。" },
+    { "id": "toppa_a_yoriku",   "alert": true,  "text": "A地点、揚陸を伴い突破されました。A地点、揚陸突破。" },
+    { "id": "toppa_b",          "alert": true,  "text": "B地点、突破されました。B地点、突破。" },
+    { "id": "toppa_b_yoriku",   "alert": true,  "text": "B地点、揚陸を伴い突破されました。B地点、揚陸突破。" },
+    { "id": "onmitsu_chuo",     "alert": true,  "text": "敵、隠密使用。中央、警戒してください。" },
+    { "id": "onmitsu_honjin",   "alert": true,  "text": "敵、隠密使用。本陣に届くおそれあり。警戒してください。" },
+    { "id": "yosaiho_chuo",     "alert": true,  "text": "要塞砲、準備中。中央、30秒以内。" },
+    { "id": "yosaiho_a",        "alert": true,  "text": "要塞砲、準備中。A地点方向、30秒以内。" },
+    { "id": "yosaiho_b",        "alert": true,  "text": "要塞砲、準備中。B地点方向、30秒以内。" },
+
+    { "id": "awase_chuo", "alert": false, "segments": [
+      { "text": "中央、攻撃合わせ。10秒前。" },
+      { "silenceMs": 4000 },
+      { "text": "5秒前。" },
+      { "silenceMs": 1400 },
+      { "text": "3。" }, { "silenceMs": 600 },
+      { "text": "2。" }, { "silenceMs": 600 },
+      { "text": "1。" }, { "silenceMs": 300 },
+      { "text": "攻撃！" }
+    ]},
+    { "id": "awase_tekihonjin", "alert": false, "segments": [
+      { "text": "敵本陣、攻撃合わせ。10秒前。" },
+      { "silenceMs": 4000 },
+      { "text": "5秒前。" },
+      { "silenceMs": 1400 },
+      { "text": "3。" }, { "silenceMs": 600 },
+      { "text": "2。" }, { "silenceMs": 600 },
+      { "text": "1。" }, { "silenceMs": 300 },
+      { "text": "攻撃！" }
+    ]},
+
+    { "id": "kaijo", "alert": false, "text": "警報解除。対応ありがとうございました。" },
+    { "id": "test",  "alert": false, "text": "テスト再生です。音量を確認してください。" },
+
+    { "id": "tts_shugo_5min",     "alert": false, "preset": true, "text": "5分後に集合してください。" },
+    { "id": "tts_bouei_keizoku",  "alert": false, "preset": true, "text": "防衛を継続してください。" },
+    { "id": "tts_hokyu",          "alert": false, "preset": true, "text": "防衛後、補給をお願いします。" },
+    { "id": "tts_teisatsu",       "alert": false, "preset": true, "text": "偵察の可能性があります。各自確認してください。" },
+    { "id": "tts_migi",           "alert": false, "preset": true, "text": "敵主力は右側へ移動中です。" },
+    { "id": "tts_hidari",         "alert": false, "preset": true, "text": "敵主力は左側へ移動中です。" }
+  ]
+}

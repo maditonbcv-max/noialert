@@ -1,0 +1,19 @@
+{
+  "name": "ノイサガ艦隊警報",
+  "short_name": "艦隊警報",
+  "description": "ノイサガ艦隊向け Discord VC 警報発信",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#161616",
+  "theme_color": "#1a1a1a",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
