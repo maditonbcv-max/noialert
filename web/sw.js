@@ -1,5 +1,5 @@
 /* Service Worker — 静的シェルのみキャッシュ。API呼び出しは常にネットワーク。 */
-const CACHE = 'noialert-v2';
+const CACHE = 'noialert-v3';
 const ASSETS = [
   './',
   './index.html',

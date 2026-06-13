@@ -58,7 +58,7 @@ export function loadConfig(): AppConfig {
       engine: (optional('TTS_ENGINE', 'openai') as 'openai' | 'voicevox'),
       openaiApiKey: optional('OPENAI_API_KEY', ''),
       openaiModel: optional('OPENAI_TTS_MODEL', 'gpt-4o-mini-tts'),
-      openaiVoice: optional('OPENAI_TTS_VOICE', 'alloy'),
+      openaiVoice: optional('OPENAI_TTS_VOICE', 'nova'),
     },
   };
 }

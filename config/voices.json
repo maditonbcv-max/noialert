@@ -54,6 +54,9 @@
       { "text": "攻撃！" }
     ]},
 
+    { "id": "awase_chuo_90s",       "alert": false, "text": "中央、攻撃合わせ準備。90秒前。" },
+    { "id": "awase_tekihonjin_90s", "alert": false, "text": "敵本陣、攻撃合わせ準備。90秒前。" },
+
     { "id": "kaijo", "alert": false, "text": "警報解除。対応ありがとうございました。" },
     { "id": "test",  "alert": false, "text": "テスト再生です。音量を確認してください。" }
   ]

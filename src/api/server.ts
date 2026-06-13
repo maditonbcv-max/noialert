@@ -104,8 +104,8 @@ export async function buildServer(deps: ServerDeps): Promise<FastifyInstance> {
       return reply.code(503).send({ result: 'error', message: '自由入力TTSは現在利用できません' });
     }
 
-    // 発信者単位の連打制限 (30秒に1回)
-    if (!throttle.check(`tts:${sender}`, FREE_TTS_PER_SENDER_MS)) {
+    // 発信者単位の連打制限 (FREE_TTS_PER_SENDER_MS=0 で無効)
+    if (FREE_TTS_PER_SENDER_MS > 0 && !throttle.check(`tts:${sender}`, FREE_TTS_PER_SENDER_MS)) {
       return reply.send({ result: 'throttled' });
     }
 
