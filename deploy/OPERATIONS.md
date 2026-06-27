@@ -63,6 +63,17 @@ sudo chmod -R o+rX /opt/noialert/app/web
 sudo systemctl restart noialert-bot
 ```
 
+### ⑦ チャット読み上げ ON/OFF
+対象chのメッセージをBotが読み上げる機能。**先にDeveloper Portalで MESSAGE CONTENT INTENT を有効化**してから:
+```bash
+# ON (例: #会戦 を対象に。カンマ区切りで複数可)
+sudo -u noialert -H bash -lc "cd /opt/noialert/app && sed -i 's#^DISCORD_TTS_CHAT_CHANNEL_IDS=.*#DISCORD_TTS_CHAT_CHANNEL_IDS=1515255783133020230#' .env"
+# OFF
+sudo -u noialert -H bash -lc "cd /opt/noialert/app && sed -i 's#^DISCORD_TTS_CHAT_CHANNEL_IDS=.*#DISCORD_TTS_CHAT_CHANNEL_IDS=#' .env"
+sudo systemctl restart noialert-bot
+```
+⚠ Portalでインテント未有効のままONにすると、ログイン不可(`disallowed intents`)でBotが起動しない。その時はOFFに戻して再起動。
+
 ---
 
 ## メモ

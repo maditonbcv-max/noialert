@@ -20,6 +20,8 @@ export interface AppConfig {
     guildId: string;
     voiceChannelId: string;
     logChannelId: string;
+    /** チャット読み上げ対象チャンネルID(空=機能OFF)。MESSAGE CONTENT INTENT必須。 */
+    ttsChatChannelIds: string[];
   };
   api: {
     secret: string;
@@ -47,6 +49,8 @@ export function loadConfig(): AppConfig {
       guildId: required('DISCORD_GUILD_ID'),
       voiceChannelId: required('DISCORD_VOICE_CHANNEL_ID'),
       logChannelId: required('DISCORD_LOG_CHANNEL_ID'),
+      ttsChatChannelIds: optional('DISCORD_TTS_CHAT_CHANNEL_IDS', '')
+        .split(',').map((s) => s.trim()).filter(Boolean),
     },
     api: {
       secret: required('API_SECRET'),

@@ -1,12 +1,16 @@
 // Discord 接続 + VC常時接続 + 自動復帰 (仕様 §9.2 / §9.3)。
 import {
-  Client, GatewayIntentBits, Events, type TextBasedChannel,
+  Client, GatewayIntentBits, Events, type TextBasedChannel, type Message,
 } from 'discord.js';
 import {
   joinVoiceChannel, entersState, VoiceConnectionStatus, type VoiceConnection,
 } from '@discordjs/voice';
 import type { AppConfig } from '../config.js';
 import type { AlertPlayer } from '../queue/player.js';
+import type { TtsEngine } from '../tts/engine.js';
+import type { Throttle } from '../queue/throttle.js';
+import { FREE_TTS_PRIORITY, CHAT_TTS_THROTTLE_MS } from '../alerts.js';
+import { prepareChatTts } from '../tts/validate.js';
 import { logger } from '../logger.js';
 
 export class DiscordBot {
@@ -15,10 +19,19 @@ export class DiscordBot {
   private rejoinAttempts = 0;
   private healthTimer: NodeJS.Timeout | null = null;
 
-  constructor(private cfg: AppConfig, private player: AlertPlayer) {
-    this.client = new Client({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
-    });
+  constructor(
+    private cfg: AppConfig,
+    private player: AlertPlayer,
+    private ttsEngine: TtsEngine,
+    private throttle: Throttle,
+  ) {
+    const intents = [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates];
+    // チャット読み上げ対象chがある時だけ特権インテントを要求
+    // (Developer Portalで未有効のまま要求するとログイン不可になるため)
+    if (cfg.discord.ttsChatChannelIds.length > 0) {
+      intents.push(GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent);
+    }
+    this.client = new Client({ intents });
   }
 
   async start(): Promise<void> {
@@ -31,6 +44,12 @@ export class DiscordBot {
 
     await this.setupLogChannel();
     await this.joinVoice();
+
+    // チャット読み上げ (有効時のみ)
+    if (this.cfg.discord.ttsChatChannelIds.length > 0) {
+      this.client.on(Events.MessageCreate, (msg) => void this.onChatMessage(msg));
+      console.log(`[discord] チャット読み上げ有効: ${this.cfg.discord.ttsChatChannelIds.join(', ')}`);
+    }
 
     // 30秒間隔でVC接続をヘルスチェック (仕様 §9.3)
     this.healthTimer = setInterval(() => {
@@ -106,6 +125,35 @@ export class DiscordBot {
       void logger.system(`⚠️ VC再接続に繰り返し失敗しています (試行 ${this.rejoinAttempts} 回目)。`);
     }
     setTimeout(() => void this.joinVoice(), delay).unref();
+  }
+
+  // 対象chの人間の発言を読み上げる (ループ防止: Bot/自分の投稿は読まない)。
+  private async onChatMessage(msg: Message): Promise<void> {
+    if (!this.cfg.discord.ttsChatChannelIds.includes(msg.channelId)) return;
+    if (msg.author.bot) return; // ← ループ防止の要(自分のログ投稿も読まない)
+    if (!this.ttsEngine.isAvailable()) return;
+
+    const prepared = prepareChatTts(msg.cleanContent);
+    if (!prepared.ok) return;
+
+    // 同一ユーザー連投制限 (洪水防止)
+    if (!this.throttle.check(`chat:${msg.author.id}`, CHAT_TTS_THROTTLE_MS)) return;
+
+    try {
+      const buffer = await this.ttsEngine.generateSpeech(prepared.text);
+      this.player.enqueue({
+        id: 'chat_tts',
+        displayName: prepared.text,
+        kind: 'free_tts',
+        priority: FREE_TTS_PRIORITY,
+        interrupt: false,
+        sender: msg.member?.displayName ?? msg.author.username,
+        enqueuedAt: Date.now(),
+        getBuffer: () => buffer,
+      });
+    } catch (e) {
+      console.error('[chat-tts] 生成失敗:', (e as Error).message);
+    }
   }
 
   isVoiceConnected(): boolean {

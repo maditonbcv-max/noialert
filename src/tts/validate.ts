@@ -13,6 +13,22 @@ export async function loadNgWords(path: string): Promise<void> {
 }
 
 export const MAX_FREE_TTS_LEN = 80;
+export const CHAT_TTS_MAX_LEN = 100;
+
+/**
+ * Discordチャット読み上げ用の整形。メンションは cleanContent で解決済みの前提。
+ * URL・カスタム絵文字・連続空白を除去し、長すぎる場合は切り詰める。空なら読まない。
+ */
+export function prepareChatTts(cleanText: string): { ok: true; text: string } | { ok: false } {
+  let t = cleanText
+    .replace(/https?:\/\/\S+/gi, ' ')        // URL除去
+    .replace(/<a?:\w+:\d+>/g, ' ')           // カスタム絵文字 <:name:id> 除去
+    .replace(/\s+/g, ' ')                     // 連続空白を1つに
+    .trim();
+  if (t === '') return { ok: false };
+  if (t.length > CHAT_TTS_MAX_LEN) t = t.slice(0, CHAT_TTS_MAX_LEN);
+  return { ok: true, text: t };
+}
 
 export type ValidateResult =
   | { ok: true; text: string }

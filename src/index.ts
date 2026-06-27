@@ -38,7 +38,7 @@ async function main(): Promise<void> {
   await loadNgWords(join(ROOT, 'config', 'ngwords.json'));
 
   // 5. Discord ログイン → VC接続 → ログch設定 (仕様 §9.2-2)
-  const bot = new DiscordBot(cfg, player);
+  const bot = new DiscordBot(cfg, player, ttsEngine, throttle);
   await bot.start();
 
   // 6. OpenAI 疎通確認 (失敗しても起動継続・自由TTSのみ無効化, 仕様 §9.2-3)
